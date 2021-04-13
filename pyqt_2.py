@@ -121,17 +121,19 @@ class MyWindow(QMainWindow):
     i=0
 
     # real time Database
-    cred = credentials.Certificate('Utils/capstone-ffa4f-firebase-adminsdk-qsa08-5ecf49e747.json')
+    firebase_key_Path = ""
+    firebase_Project_URL=""
+    cred = credentials.Certificate(firebase_key_Path)
     firebase_admin.initialize_app(cred,{
-        'databaseURL': 'https://capstone-ffa4f.firebaseio.com/'})
+        'databaseURL':firebase_Project_URL})
     ref = db.reference('System/')
     facerecog = ref.get()['face_recog'] # System face_recog from DB
     keypad = ref.get()['keypad']        # System keypad from DB
 
     # Storage to take face photo
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "Utils/capstone-ffa4f-firebase-adminsdk-qsa08-5ecf49e747.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = firebase_key_Path
     client = storage.Client()
-    bucket = client.get_bucket('capstone-ffa4f.appspot.com')
+    bucket = client.get_bucket(firebase_Project_URL)
 
     port = "/dev/ttyUSB0"
     ser = serial.Serial(port, 9600)
